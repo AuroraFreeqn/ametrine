@@ -248,12 +248,123 @@
 		});
 	</script>
 
-	
+<style>
+	body {
+		margin: 0;
+		overflow: hidden;
+		background-color: #000;
+		position: relative;
+	}
 
+	.snowflake {
+		position: fixed; /* Снежинки остаются на экране при прокрутке */
+		background-color: white;
+		border-radius: 50%;
+		opacity: 0.8;
+		pointer-events: none;
+		animation: fall linear infinite;
+	}
+
+	@keyframes fall {
+		0% {
+			transform: translateY(-10px);
+		}
+		100% {
+			transform: translateY(100vh);
+		}
+	}
+</style>
 
 	
 		<link rel="icon" type="image/png" href="img/favicon.png" sizes="32x32" />
 	
+	
+</head>
+<body data-template="page_view">
+
+<div class="p-pageWrapper" id="top">
+
+
+	
+	<script>
+        const maxSnowflakes = 30; // Максимальное количество снежинок на экране
+        const snowflakes = []; // Массив для хранения снежинок
+        const cursorRadius = 50; // Радиус зоны вокруг курсора
+        const deflectionSpeed = 0.05; // Скорость изменения направления (инерция)
+        let mouseX = 0, mouseY = 0; // Координаты мыши
+
+        // Обновляем координаты мыши
+        document.addEventListener('mousemove', (e) => {
+            mouseX = e.clientX;
+            mouseY = e.clientY;
+        });
+
+        // Функция для создания снежинок
+        function createSnowflake() {
+            if (snowflakes.length >= maxSnowflakes) {
+                return; // Не добавляем новые снежинки, если их уже 30
+            }
+
+            const snowflake = document.createElement('div');
+            snowflake.classList.add('snowflake');
+
+            // Устанавливаем случайный размер снежинки
+            const size = Math.random() * 5 + 5; // Размер от 5px до 10px
+            snowflake.style.width = `${size}px`;
+            snowflake.style.height = `${size}px`;
+
+            // Устанавливаем случайные начальные координаты снежинки
+            const startX = Math.random() * window.innerWidth;
+            const startY = -10; // Начало чуть выше экрана
+            snowflake.style.left = `${startX - size / 2}px`;
+            snowflake.style.top = `${startY}px`;
+
+            // Добавляем снежинку в DOM и массив
+            document.body.appendChild(snowflake);
+            snowflakes.push(snowflake);
+
+            // Анимация падения снежинки
+            let speedY = Math.random() * 3 + 1.5; // Скорость падения
+            let speedX = Math.random() * 0.5 - 0.25; // Легкое движение по X
+
+            const moveSnowflake = () => {
+                const rect = snowflake.getBoundingClientRect();
+                let newX = rect.left + speedX;
+                let newY = rect.top + speedY;
+
+                // Проверка, находится ли снежинка в зоне вокруг курсора
+                const dx = newX + rect.width / 2 - mouseX;
+                const dy = newY + rect.height / 2 - mouseY;
+                const distance = Math.sqrt(dx * dx + dy * dy);
+
+                if (distance < cursorRadius) {
+                    // Вычисляем направление обтекания
+                    const angle = Math.atan2(dy, dx);
+
+                    // Плавно корректируем горизонтальную скорость
+                    speedX += Math.cos(angle) * deflectionSpeed;
+                }
+
+                // Устанавливаем новые координаты
+                snowflake.style.left = `${newX}px`;
+                snowflake.style.top = `${newY}px`;
+
+                // Удаляем снежинку, если она выходит за пределы экрана
+                if (newY > window.innerHeight) {
+                    snowflake.remove();
+                    const index = snowflakes.indexOf(snowflake);
+                    if (index > -1) snowflakes.splice(index, 1);
+                } else {
+                    requestAnimationFrame(moveSnowflake);
+                }
+            };
+
+            moveSnowflake();
+        }
+
+        // Запуск создания снежинок
+        setInterval(createSnowflake, 200); // Интервал создания снежинок
+    </script>
 	
 </head>
 <body data-template="page_view">
