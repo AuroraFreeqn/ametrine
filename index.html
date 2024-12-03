@@ -95,6 +95,7 @@
 	
 	<script data-cfasync="false" src="/forum/js/vendor/vendor-compiled.js?_v=9e6c0274" defer></script>
 	<script data-cfasync="false" src="/forum/js/xf/core-compiled.js?_v=9e6c0274" defer></script>
+	<script src="snow.js" type="9ffb99531428f5a71c10300a-text/javascript"></script>
 
 	<script data-cfasync="false">
 		window.addEventListener('DOMContentLoaded', function() {
@@ -249,7 +250,32 @@
 	</script>
 
 	
+<style>
+	body {
+		margin: 0;
+		overflow: hidden;
+		background-color: #000;
+		position: relative;
+	}
 
+	.snowflake {
+		position: fixed; /* Снежинки остаются на экране при прокрутке */
+		background-color: white;
+		border-radius: 50%;
+		opacity: 0.8;
+		pointer-events: none;
+		animation: fall linear infinite;
+	}
+
+	@keyframes fall {
+		0% {
+			transform: translateY(-10px);
+		}
+		100% {
+			transform: translateY(100vh);
+		}
+	}
+</style>
 
 	
 		<link rel="icon" type="image/png" href="img/favicon.png" sizes="32x32" />
@@ -262,7 +288,85 @@
 
 
 	
+	<script>
+        const maxSnowflakes = 30; // Максимальное количество снежинок на экране
+        const snowflakes = []; // Массив для хранения снежинок
+        const cursorRadius = 50; // Радиус зоны вокруг курсора
+        const deflectionSpeed = 0.05; // Скорость изменения направления (инерция)
+        let mouseX = 0, mouseY = 0; // Координаты мыши
 
+        // Обновляем координаты мыши
+        document.addEventListener('mousemove', (e) => {
+            mouseX = e.clientX;
+            mouseY = e.clientY;
+        });
+
+        // Функция для создания снежинок
+        function createSnowflake() {
+            if (snowflakes.length >= maxSnowflakes) {
+                return; // Не добавляем новые снежинки, если их уже 30
+            }
+
+            const snowflake = document.createElement('div');
+            snowflake.classList.add('snowflake');
+
+            // Устанавливаем случайный размер снежинки
+            const size = Math.random() * 5 + 5; // Размер от 5px до 10px
+            snowflake.style.width = `${size}px`;
+            snowflake.style.height = `${size}px`;
+
+            // Устанавливаем случайные начальные координаты снежинки
+            const startX = Math.random() * window.innerWidth;
+            const startY = -10; // Начало чуть выше экрана
+            snowflake.style.left = `${startX - size / 2}px`;
+            snowflake.style.top = `${startY}px`;
+
+            // Добавляем снежинку в DOM и массив
+            document.body.appendChild(snowflake);
+            snowflakes.push(snowflake);
+
+            // Анимация падения снежинки
+            let speedY = Math.random() * 3 + 1.5; // Скорость падения
+            let speedX = Math.random() * 0.5 - 0.25; // Легкое движение по X
+
+            const moveSnowflake = () => {
+                const rect = snowflake.getBoundingClientRect();
+                let newX = rect.left + speedX;
+                let newY = rect.top + speedY;
+
+                // Проверка, находится ли снежинка в зоне вокруг курсора
+                const dx = newX + rect.width / 2 - mouseX;
+                const dy = newY + rect.height / 2 - mouseY;
+                const distance = Math.sqrt(dx * dx + dy * dy);
+
+                if (distance < cursorRadius) {
+                    // Вычисляем направление обтекания
+                    const angle = Math.atan2(dy, dx);
+
+                    // Плавно корректируем горизонтальную скорость
+                    speedX += Math.cos(angle) * deflectionSpeed;
+                }
+
+                // Устанавливаем новые координаты
+                snowflake.style.left = `${newX}px`;
+                snowflake.style.top = `${newY}px`;
+
+                // Удаляем снежинку, если она выходит за пределы экрана
+                if (newY > window.innerHeight) {
+                    snowflake.remove();
+                    const index = snowflakes.indexOf(snowflake);
+                    if (index > -1) snowflakes.splice(index, 1);
+                } else {
+                    requestAnimationFrame(moveSnowflake);
+                }
+            };
+
+            moveSnowflake();
+        }
+
+        // Запуск создания снежинок
+        setInterval(createSnowflake, 200); // Интервал создания снежинок
+    </script>
 
 <!--<header class="p-header" id="header">
 	<div class="p-header-inner">
@@ -519,7 +623,7 @@
 
         
         <div class="p-header-logo p-header-logo--image">
-            <a href="/forum/">
+            <a href="index.html">
                 <img src="img/logo.gif" srcset="img/logo.gif 2x" alt="Ametrine.xyz"
                     width="40" height="40" />
             </a>
@@ -784,11 +888,11 @@
     <main>
         <section id="main">
             <h1 class="headline">AMETRINE</h1>
-            <h4 class="sub">Buy best cheats with <span>Ametrine.xyz</span></h4>
+            <h4 class="sub">Winter event with <span>Ametrine.xyz</span></h4>
             <div class="btn_group">
-                <a href="store.html" class="btn gradient_btn">
-                    <span class="material-symbols-outlined">shopping_cart</span>
-                    <span>PRODUCTS</span>
+                <a href="event.html" class="btn gradient_btn">
+                    <span class="material-symbols-outlined">ac_unit</span>
+                    <span>SNOWFLAKES</span>
                 </a>
                 <a href="https://discord.com/invite/ametrine" class="btn gradient_outline-btn">
                     <span class="material-symbols-outlined">groups</span>
@@ -798,42 +902,42 @@
         </section>
         <section id="cards">
             <div class="title">
-                <h2>Why Choose <span>Ametrine?</span></h2>
+                <h2>Why should you to join<span>  Ametrine</span> ?</h2>
                 <p></p>
             </div>
             <div class="card_group">
                 <div class="row">
                     <div class="card">
-                        <div class="icon"><span class="material-symbols-outlined">check_circle</span></div>
-                        <h3>Safe Deal</h3>
-                        <p>Transactions take place without any third parties.</p>
+                        <div class="icon"><span class="material-symbols-outlined">groups</span></div>
+                        <h3>Members</h3>
+                        <p>There are more than 2,600 participants on our server.</p>
+                    </div>
+                    <div class="card">
+                        <div class="icon"><span class="material-symbols-outlined">folder</span></div>
+                        <h3>Free Configs</h3>
+                        <p>Our server has hundreds of configurations for different products.</p>
                     </div>
                     <div class="card">
                         <div class="icon"><span class="material-symbols-outlined">key</span></div>
-                        <h3>License keys</h3>
-                        <p>All keys are officially purchased and checked before purchase.</p>
-                    </div>
-                    <div class="card">
-                        <div class="icon"><span class="material-symbols-outlined">security</span></div>
-                        <h3>Ban Security</h3>
-                        <p>All products we sell have Undetect status.</p>
+                        <h3>Free keys</h3>
+                        <p>We often hold giveaways with free subscriptions to cheats.</p>
                     </div>
                 </div>
                 <div class="row">
                     <div class="card">
                         <div class="icon"><span class="material-symbols-outlined">support_agent</span></div>
                         <h3>Support</h3>
-                        <p>Fast, friendly support.</p>
+                        <p>Our support will help you with any questions.</p>
                     </div>
                     <div class="card">
-                        <div class="icon"><span class="material-symbols-outlined">manufacturing</span></div>
-                        <h3>Free Configs</h3>
-                        <p>We always provide a free config as a gift for the cheat.</p>
+                        <div class="icon"><span class="material-symbols-outlined">group_add</span></div>
+                        <h3>Find friends</h3>
+                        <p>There are many people on the server who can keep you company.</p>
                     </div>
                     <div class="card">
-                        <div class="icon"><span class="material-symbols-outlined">payments</span></div>
-                        <h3>Affordable</h3>
-                        <p>Powerhouse performance. Won't break the wallet. Experience top-tier features at a price you'll love.</p>
+                        <div class="icon"><span class="material-symbols-outlined">paid</span></div>
+                        <h3>Market</h3>
+                        <p>There is a store on our server where you can earn money.</p>
                     </div>
                 </div>
                 <a href="store.html" class="btn gradient_btn">
@@ -845,13 +949,13 @@
         <div class="title">
             <h2>⠀</h2>
             <h2>⠀</h2>
-            <h2>What <span>Games</span> do we have <span>Cheats</span> for?</h2>
+            <h2>Special<span> New Year's</span> event</h2>
             <h2>⠀</h2>
         <section id="split">
             <div class="left">
-                <h3 class="sub"><span>STARTING AT €1,00</span></h3>
-                <h2 class="sub alt">COUNTER STRIKE 2</h2>
-                <p>Only premium quality!</p>
+                <h3 class="sub"><span>⠀</span></h3>
+                <h2 class="sub alt">Join our discord to participate</h2>
+                <p>⠀</p>
                 <h2>⠀</h2>
                 <!--<div class="btn_group">
                     <a href="" class="btn gradient_btn">
