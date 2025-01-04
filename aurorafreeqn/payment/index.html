@@ -1,0 +1,273 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Payment</title>
+    <link rel="icon" type="image/x-icon" href="avatar.png">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.2.0/css/all.min.css" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --primary: #8d89ff;
+            --icons: #ffffff;
+            --loc-color: #ffffff;
+            --primary1: #625d7199;
+            --primary2: #ffffff;
+            --bg-color: #0D0D0D;
+            --text-color: #FFFFFF;
+            --icon-size: 1.5rem;
+            --glow-color: rgba(154, 128, 255, 0.5);
+            --glow-icons: rgba(255, 255, 255, 0.5);
+            --glow-color1: rgba(0, 0, 0, 0.5);
+            --glow-color2: rgba(0, 0, 0, 0.37);
+            --text-glow-color: rgba(135, 122, 255, 0.3);
+            --slider-color: #fbfbff41;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Poppins', sans-serif;
+            background: url('fon1.gif') no-repeat center center fixed;
+            background-size: cover;
+            color: var(--text-color);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            height: 100vh;
+            overflow: hidden;
+            text-align: center;
+            position: relative;
+        }
+
+        body::before {
+            content: "";
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.3);
+            backdrop-filter: blur(1px);
+            z-index: -1;
+        }
+
+        .container {
+            width: 80%;
+            max-width: 600px;
+            backdrop-filter: blur(20px);
+            border: 1px solid var(--primary1);
+            border-radius: 15px;
+            padding: 2rem;
+            box-shadow: 0 0 10px var(--glow-color2);
+            transition: transform 0.1s ease, opacity 1s ease;
+            opacity: 0;
+        }
+
+        .avatar {
+            width: 150px;
+            height: 150px;
+            border-radius: 50%;
+            border: 3px solid var(--primary);
+            box-shadow: 0 0 20px var(--glow-color);
+            margin: 0 auto;
+            display: block;
+        }
+
+        .role-badge {
+            display: inline-block;
+            padding: 0.2rem 0.8rem;
+            margin-top: 0.5rem;
+            font-size: 0.8rem;
+            color: var(--text-color);
+            border: 1px solid var(--primary);
+            border-radius: 15px;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            box-shadow: 0 0 15px var(--glow-color);
+        }
+
+        h1 {
+            font-size: 2rem;
+            margin-top: 1rem;
+            text-shadow: 0 0 10px var(--text-glow-color);
+        }
+
+        p {
+            font-size: 1rem;
+            margin: 1rem 0;
+            color: #ccc;
+            text-shadow: 0 0 8px var(--text-glow-color);
+        }
+
+        .crypto-select {
+            margin-top: 1rem;
+        }
+
+        select {
+            padding: 0.5rem;
+            border-radius: 10px;
+            border: 1px solid var(--primary);
+            background: var(--bg-color);
+            color: var(--text-color);
+            font-size: 1rem;
+            box-shadow: 0 0 10px var(--glow-color);
+            outline: none;
+        }
+
+        .crypto-address {
+            margin: 1rem auto 0 auto;
+            font-size: 0.9rem;
+            color: var(--text-color);
+            text-shadow: 0 0 8px var(--text-glow-color);
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            border: 1px solid var(--primary);
+            padding: 0.5rem 1rem;
+            border-radius: 10px;
+            background: var(--bg-color);
+            width: fit-content;
+            max-width: 90%;
+            box-shadow: 0 0 10px var(--glow-color);
+        }
+
+        .crypto-address span {
+            word-break: break-word;
+            margin-right: 0.5rem;
+        }
+
+        .copy-icon {
+            cursor: pointer;
+            color: var(--icons);
+            font-size: 1.2rem;
+            text-shadow: 0 0 10px var(--glow-icons);
+            transition: transform 0.2s ease;
+        }
+
+        .copy-icon:hover {
+            transform: scale(1.2);
+        }
+
+        .copy-notification {
+            position: fixed;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            background: rgba(0, 0, 0, 0.8);
+            color: var(--text-color);
+            padding: 1rem 2rem;
+            border-radius: 10px;
+            box-shadow: 0 0 15px var(--glow-color);
+            font-size: 1rem;
+            text-shadow: 0 0 10px var(--text-glow-color);
+            opacity: 0;
+            pointer-events: none;
+            transition: opacity 0.3s ease;
+            z-index: 100;
+        }
+
+        .copy-notification.active {
+            opacity: 1;
+            pointer-events: auto;
+        }
+
+        .small-image {
+            position: fixed;
+            bottom: 10px;
+            right: 10px;
+            width: 100px;
+            height: 50px;
+        }
+    </style>
+</head>
+<body>
+    <div class="container" id="info-box">
+        <img src="avatar.png" alt="Avatar" class="avatar">
+        <h1>AuroraFreeqn</h1>
+        <span class="role-badge"><i class="fas fa-circle-play"></i> PAYMENT FOR VIDEO</span>
+        <p></p>
+        <h3><i class="fas fa-wallet"></i> Crypto</h3>
+        <div class="crypto-select">
+            <select id="crypto-selector">
+                <option value="">Select Cryptocurrency</option>
+                <option value="LTC">Litecoin (LTC)</option>
+                <option value="USDT">USDT (TRC20)</option>
+                <option value="BTC">Bitcoin (BTC)</option>
+                <option value="USDC">USDC (ERC20)</option>
+            </select>
+        </div>
+
+        <div class="crypto-address" id="crypto-address" style="display: none;">
+            <span id="crypto-address-text"></span>
+            <i class="fas fa-copy copy-icon" id="copy-icon"></i>
+        </div>
+    </div>
+
+    <div class="copy-notification" id="copy-notification">Address Copied!</div>
+
+    <img src="small-image.png" alt="Small Image" class="small-image">
+
+    <script>
+        const cryptoSelector = document.getElementById('crypto-selector');
+        const cryptoAddress = document.getElementById('crypto-address');
+        const cryptoAddressText = document.getElementById('crypto-address-text');
+        const copyIcon = document.getElementById('copy-icon');
+        const copyNotification = document.getElementById('copy-notification');
+
+        const addresses = {
+            LTC: 'ltc1qz56rt6s7jjxhywh8wwfymkgr9qt5pmgy066dhe',
+            USDT: 'TGHSvdjoMokSPrZoGAVBPaMsCTmqVfQG9k',
+            BTC: 'bc1q8nap98y403g2vm3cd326haxwpddezt5y8nfara',
+            USDC: '0x970C0309FEEc2996AB69c1D494D2a80263C9f445'
+        };
+
+        cryptoSelector.addEventListener('change', (event) => {
+            const selectedCrypto = event.target.value;
+            if (selectedCrypto) {
+                cryptoAddress.style.display = 'flex';
+                cryptoAddressText.textContent = addresses[selectedCrypto];
+            } else {
+                cryptoAddress.style.display = 'none';
+            }
+        });
+
+        copyIcon.addEventListener('click', () => {
+            navigator.clipboard.writeText(cryptoAddressText.textContent).then(() => {
+                copyNotification.classList.add('active');
+                setTimeout(() => {
+                    copyNotification.classList.remove('active');
+                }, 1500);
+            }).catch(err => {
+                console.error('Failed to copy address.');
+            });
+        });
+
+        window.addEventListener('load', () => {
+            const infoBox = document.getElementById('info-box');
+            infoBox.style.opacity = '1';
+            infoBox.style.transform = 'translateY(0)';
+        });
+
+        document.addEventListener('mousemove', (event) => {
+            const { clientX, clientY } = event;
+            const centerX = window.innerWidth / 2;
+            const centerY = window.innerHeight / 2;
+
+            const deltaX = (clientX - centerX) / centerX;
+            const deltaY = (clientY - centerY) / centerY;
+
+            const rotateX = deltaY * 15;
+            const rotateY = deltaX * -15;
+
+            const infoBox = document.getElementById('info-box');
+            infoBox.style.transform = `rotateX(${rotateX}deg) rotateY(${rotateY}deg)`;
+        });
+    </script>
+</body>
+</html>
