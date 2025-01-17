@@ -1,0 +1,164 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>User List</title>
+    <link rel="icon" type="image/x-icon" href="favicon.png">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.2.0/css/all.min.css" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --primary: #f38bff;
+            --icons: #c0beff;
+            --loc-color: #c9c2ff;
+            --primary1: #cab9ff99;
+            --primary2: #ffffff;
+            --bg-color: #b5aaff00;
+            --text-color: #FFFFFF;
+            --media-text-color: #ffa1f7;
+            --icon-size: 1.5rem;
+            --glow-color: rgba(0, 0, 0, 0.631);
+            --glow-icons: rgba(0, 0, 0, 0.447);
+            --glow-color1: rgba(0, 0, 0, 0.5);
+            --glow-color2: rgba(0, 0, 0, 0.666);
+            --text-glow-color: rgba(243, 139, 255, 0.472);
+            --hover-color: rgba(0, 0, 0, 0.727);
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Poppins', sans-serif;
+            background: url('fon.gif') no-repeat center center fixed;
+            background-size: cover;
+            color: var(--text-color);
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            min-height: 100vh;
+            overflow: hidden;
+            text-align: center;
+            position: relative;
+        }
+
+        body::before {
+            content: "";
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.3);
+            backdrop-filter: blur(1px);
+            z-index: -1;
+        }
+
+        .user-list {
+            width: 80%;
+            max-width: 800px;
+            display: flex;
+            flex-direction: column;
+            gap: 1.5rem;
+        }
+
+        .user-card {
+            display: flex;
+            align-items: center;
+            background: rgba(0, 0, 0, 0);
+            backdrop-filter: blur(15px);
+            -webkit-backdrop-filter: blur(15px);
+            padding: 1rem;
+            border-radius: 15px;
+            box-shadow: 0 0 10px var(--glow-color2);
+            transition: transform 0.3s ease;
+            text-decoration: none;
+            color: var(--text-color);
+        }
+
+        .user-card:hover {
+            transform: scale(1.05);
+            box-shadow: 0 0 20px var(--hover-color);
+        }
+
+        .user-avatar {
+            width: 120px;
+            height: 120px;
+            border-radius: 10%;
+            border: 3px solid var(--primary);
+            box-shadow: 0 0 20px var(--glow-color);
+        }
+
+        .user-info {
+            flex: 1;
+            margin-left: 1rem;
+            text-align: left;
+        }
+
+        .user-info h4 {
+            font-size: 1.5rem;
+            margin: 0;
+            text-shadow: 0 0 10px var(--text-glow-color);
+        }
+
+        .user-info p {
+            font-size: 1rem;
+            color: var(--media-text-color);
+            margin: 0.5rem 0 0;
+            text-shadow: 0 0 8px var(--text-glow-color);
+        }
+    </style>
+</head>
+<body>
+    <h1 style="font-size: 2rem; margin-bottom: 2rem; color: var(--text-color); text-shadow: 0 0 15px var(--text-glow-color);">Free configs list</h1>
+    <div class="user-list">
+        <a href="https://ametrine.xyz/configs/memelegit" class="user-card" target="_blank">
+            <img src="LegitConfig.png" alt="User 1 Avatar" class="user-avatar">
+            <div class="user-info">
+                <h4>LEGIT CONFIG</h4>
+                <p>MEMESENSE</p>
+            </div>
+        </a>
+
+        <a href="https://ametrine.xyz/configs/memerage" class="user-card" target="_blank">
+            <img src="RageConfig.png" alt="User 2 Avatar" class="user-avatar">
+            <div class="user-info">
+                <h4>SEMI-RAGE CONFIG</h4>
+                <p>MEMESENSE</p>
+            </div>
+        </a>
+
+        <a href="https://ametrine.xyz/configs" class="user-card" target="_blank">
+            <img src="NewCfg.png" alt="User 3 Avatar" class="user-avatar">
+            <div class="user-info">
+                <h4>...</h4>
+                <p>Soon</p>
+            </div>
+        </a>
+
+        <div id="notification" style="display: none; position: fixed; bottom: 20px; right: 20px; background-color: #4caf50; color: white; padding: 10px 20px; border-radius: 5px; box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);">
+            1
+        </div>
+    
+        <script>
+            function copyToClipboard(text) {
+                navigator.clipboard.writeText(text).then(() => {
+                    const notification = document.getElementById("notification");
+                    notification.style.display = "block";
+                    setTimeout(() => {
+                        notification.style.display = "none";
+                    }, 2000);
+                }).catch(err => {
+                    console.error("Ошибка копирования текста: ", err);
+                });
+            }
+        </script>
+        
+    </div>
+</body>
+</html>
